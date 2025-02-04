@@ -1,0 +1,2 @@
+ld: warning: -undefined dynamic_lookup may not work with chained fixups
+ld: warning: -undefined dynamic_lookup may not work with chained fixups

@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://jq760l6cm533"]
+
+[ext_resource type="Script" path="res://addons/saturn/editor/scripts/state_machine_manager.gd" id="1_pr6ex"]
+[ext_resource type="Script" path="res://addons/saturn/editor/scripts/tree_drag_drop.gd" id="2_aw5yp"]
+[ext_resource type="PackedScene" uid="uid://d2s3523g1htp3" path="res://addons/saturn/editor/scenes/state_machine_add.tscn" id="8_gms3u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tl12p"]
+bg_color = Color(0.266667, 0.266667, 0.266667, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_1xpah"]
+font_size = 14
+font_color = Color(0.823529, 0.823529, 0.823529, 1)
+outline_size = 1
+
+[node name="State Machine" type="Control" node_paths=PackedStringArray("tree", "add_window", "not_loaded_label")]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pr6ex")
+tree = NodePath("Tree")
+add_window = NodePath("AddWindow")
+not_loaded_label = NodePath("NotLoaded")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 25.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tl12p")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = " State Machine"
+label_settings = SubResource("LabelSettings_1xpah")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tree" type="Tree" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+select_mode = 1
+script = ExtResource("2_aw5yp")
+
+[node name="NotLoaded" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Select a SaturnStatePlayer to load the state machine"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AddWindow" parent="." instance=ExtResource("8_gms3u")]
+visible = false

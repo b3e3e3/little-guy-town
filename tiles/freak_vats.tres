@@ -1,0 +1,38 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://bxe3d552q33mr"]
+
+[ext_resource type="Texture2D" uid="uid://0hhdjph80qlg" path="res://freak vat 2.png" id="1_gc5s1"]
+[ext_resource type="Texture2D" uid="uid://brj2v1ksb3713" path="res://freak vat 3_5.png" id="2_pwj4g"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1sobm"]
+texture = ExtResource("1_gc5s1")
+0:0/0 = 0
+0:0/0/z_index = 1
+1:0/0 = 0
+1:0/0/z_index = 1
+2:0/0 = 0
+2:0/0/z_index = 1
+3:0/0 = 0
+3:0/0/z_index = 1
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qjpcp"]
+texture = ExtResource("2_pwj4g")
+0:0/0 = 0
+0:0/0/z_index = 1
+1:0/0 = 0
+1:0/0/z_index = 1
+2:0/0 = 0
+2:0/0/z_index = 1
+3:0/0 = 0
+3:0/0/z_index = 1
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[resource]
+sources/1 = SubResource("TileSetAtlasSource_1sobm")
+sources/2 = SubResource("TileSetAtlasSource_qjpcp")

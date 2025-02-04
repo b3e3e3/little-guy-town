@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MultiEvent" load_steps=5 format=3 uid="uid://d0atxhf1l11dt"]
+
+[ext_resource type="Script" uid="uid://bbhj45bs3anhx" path="res://addons/event-manager/events/Event.gd" id="1_1ivwu"]
+[ext_resource type="Script" uid="uid://gxsn0e10iu4c" path="res://addons/event-manager/events/MessageEvent.gd" id="1_g5ko2"]
+[ext_resource type="Script" uid="uid://befjaxnlat7jq" path="res://addons/event-manager/events/MultiEvent.gd" id="2_uauhc"]
+
+[sub_resource type="Resource" id="Resource_uauhc"]
+script = ExtResource("1_g5ko2")
+messages = Array[String]([])
+success = true
+metadata/_custom_type_script = ExtResource("1_g5ko2")
+
+[resource]
+script = ExtResource("2_uauhc")
+list_mode = 3
+events = Array[ExtResource("1_1ivwu")]([SubResource("Resource_uauhc")])
+success = false
+metadata/_custom_type_script = ExtResource("2_uauhc")

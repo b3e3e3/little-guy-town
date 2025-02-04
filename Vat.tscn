@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnkgh6jjwkr07"]
+
+[ext_resource type="Script" path="res://Interact/Interactable.gd" id="1_2qhsf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfn6q"]
+size = Vector2(24, 12)
+
+[node name="Vat" type="StaticBody2D"]
+position = Vector2(0, -48)
+collision_layer = 9
+script = ExtResource("1_2qhsf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_sfn6q")

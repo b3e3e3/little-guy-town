@@ -1,0 +1,36 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dj5v5biulwmbq"]
+
+[ext_resource type="FontFile" uid="uid://bd73bjhmri631" path="res://fonts/tinypixel.otf" id="1_of72y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c6dca"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_525g2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.0627451, 0.0705882, 0.109804, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 1)
+anti_aliasing = false
+
+[resource]
+default_font_size = 24
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/constants/line_spacing = 3
+Label/constants/outline_size = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/constants/shadow_outline_size = 1
+Label/fonts/font = ExtResource("1_of72y")
+Label/styles/normal = SubResource("StyleBoxEmpty_c6dca")
+MarginContainer/constants/margin_bottom = 16
+MarginContainer/constants/margin_left = 16
+MarginContainer/constants/margin_right = 16
+MarginContainer/constants/margin_top = 16
+Panel/styles/panel = SubResource("StyleBoxFlat_525g2")

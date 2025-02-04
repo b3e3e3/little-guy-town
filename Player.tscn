@@ -1,0 +1,129 @@
+[gd_scene load_steps=24 format=3 uid="uid://0uy84yww8fiu"]
+
+[ext_resource type="Script" uid="uid://dptx6ts7lvs17" path="res://player.gd" id="1_c04e4"]
+[ext_resource type="Script" uid="uid://c5slba7npkd5p" path="res://addons/saturn/SaturnStatePlayer.gd" id="2_kpjx1"]
+[ext_resource type="Script" uid="uid://b47tk6060dbfk" path="res://PlayerBody.gd" id="2_wgevd"]
+[ext_resource type="Script" uid="uid://bq5empydoetfa" path="res://addons/saturn/resources/states/SaturnState.gd" id="3_hhc34"]
+[ext_resource type="Texture2D" uid="uid://db0hko1fxjxe8" path="res://dumb ass guy 2.png" id="3_rrg6s"]
+[ext_resource type="Script" uid="uid://dt3r7ikcu1cd7" path="res://PlayerSprite.gd" id="4_1206q"]
+[ext_resource type="Script" uid="uid://o5rxwu5853gt" path="res://addons/saturn/resources/states/SaturnStateValue.gd" id="4_fgqsn"]
+[ext_resource type="Script" uid="uid://bs13xq7ambnhn" path="res://addons/saturn/resources/states/SaturnStateGroup.gd" id="4_rdf1u"]
+[ext_resource type="Script" uid="uid://bbd3smccc2exw" path="res://Interact/InteractArea.gd" id="5_1e11h"]
+[ext_resource type="Script" uid="uid://b1jl7kdvx18ou" path="res://addons/saturn/resources/states/SaturnStateCondition.gd" id="5_w78e6"]
+[ext_resource type="Script" uid="uid://cjjoebqxacu81" path="res://State/PlayerStateAdapter.gd" id="7_i0ivm"]
+
+[sub_resource type="Resource" id="Resource_02go4"]
+script = ExtResource("4_fgqsn")
+value = 0
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_5jcds"]
+script = ExtResource("4_fgqsn")
+value = 1
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_7m1he"]
+script = ExtResource("5_w78e6")
+argument_name = "should_move"
+operator = 1
+value = "true"
+children = Array[ExtResource("3_hhc34")]([SubResource("Resource_5jcds")])
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_62bcn"]
+script = ExtResource("4_fgqsn")
+value = 2
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_6ydhy"]
+script = ExtResource("5_w78e6")
+argument_name = "is_interacting"
+operator = 1
+value = "true"
+children = Array[ExtResource("3_hhc34")]([SubResource("Resource_62bcn")])
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_xh0pb"]
+script = ExtResource("4_rdf1u")
+children = Array[ExtResource("3_hhc34")]([SubResource("Resource_02go4"), SubResource("Resource_7m1he"), SubResource("Resource_6ydhy")])
+custom_name = ""
+
+[sub_resource type="Resource" id="Resource_sulhl"]
+script = ExtResource("7_i0ivm")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdyqu"]
+atlas = ExtResource("3_rrg6s")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkq0g"]
+atlas = ExtResource("3_rrg6s")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q1d5l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdyqu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdyqu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vkq0g")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbd51"]
+custom_solver_bias = 1.0
+size = Vector2(8, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ta3f5"]
+size = Vector2(16, 24)
+
+[node name="Player" type="Node"]
+script = ExtResource("1_c04e4")
+speed = 50.0
+
+[node name="SaturnStatePlayer" type="Node" parent="."]
+script = ExtResource("2_kpjx1")
+state_machine = SubResource("Resource_xh0pb")
+data_adapter = SubResource("Resource_sulhl")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+motion_mode = 1
+script = ExtResource("2_wgevd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+sprite_frames = SubResource("SpriteFrames_q1d5l")
+animation = &"run"
+frame_progress = 0.827061
+script = ExtResource("4_1206q")
+which_way_the_actual_sprite_image_is_drawn = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_lbd51")
+
+[node name="InteractArea" type="Area2D" parent="CharacterBody2D"]
+collision_mask = 8
+script = ExtResource("5_1e11h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/InteractArea"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_ta3f5")
+debug_color = Color(0.763532, 0.449852, 0, 0.42)
+
+[connection signal="move" from="." to="CharacterBody2D" method="_on_player_move"]
+[connection signal="move" from="." to="CharacterBody2D/AnimatedSprite2D" method="_on_player_move"]
+[connection signal="pressed_interact" from="." to="CharacterBody2D/InteractArea" method="interact"]
+[connection signal="stop" from="." to="CharacterBody2D" method="_on_player_stop"]
+[connection signal="stop" from="." to="CharacterBody2D/AnimatedSprite2D" method="_on_player_stop"]
+[connection signal="interacted" from="CharacterBody2D/InteractArea" to="." method="_on_interact_area_interacted"]

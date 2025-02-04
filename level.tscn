@@ -1,0 +1,126 @@
+[gd_scene load_steps=28 format=4 uid="uid://biacrer41vrt"]
+
+[ext_resource type="TileSet" uid="uid://bxe3d552q33mr" path="res://tiles/freak_vats.tres" id="1_ev1ot"]
+[ext_resource type="Script" uid="uid://evskevrh2t1y" path="res://Level1.gd" id="1_fo7y3"]
+[ext_resource type="PackedScene" uid="uid://bnkgh6jjwkr07" path="res://Vat.tscn" id="2_otl0o"]
+[ext_resource type="Script" uid="uid://bfk3u2gehwrks" path="res://Interact/EventTriggerer.gd" id="3_0tog6"]
+[ext_resource type="PackedScene" uid="uid://0uy84yww8fiu" path="res://Player.tscn" id="3_io516"]
+[ext_resource type="Script" uid="uid://bbhj45bs3anhx" path="res://addons/event-manager/events/Event.gd" id="5_aicyk"]
+[ext_resource type="Script" uid="uid://gxsn0e10iu4c" path="res://addons/event-manager/events/MessageEvent.gd" id="6_cu6w5"]
+[ext_resource type="Script" uid="uid://befjaxnlat7jq" path="res://addons/event-manager/events/MultiEvent.gd" id="6_hl4nq"]
+[ext_resource type="Script" uid="uid://jaik0qf7kp7h" path="res://addons/event-manager/events/TestEvent.gd" id="6_qgs6m"]
+[ext_resource type="Script" uid="uid://dibtpnjsfmx6w" path="res://addons/event-manager/events/NothingEvent.gd" id="7_hu76q"]
+[ext_resource type="Script" uid="uid://cexbhetky0o7p" path="res://addons/event-manager/events/FlagEvent.gd" id="8_xsc6j"]
+[ext_resource type="Script" uid="uid://bi5somofnobvg" path="res://addons/event-manager/events/GuardEvent.gd" id="10_lsmw4"]
+
+[sub_resource type="Resource" id="Resource_nkopw"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["hey"])
+success = true
+
+[sub_resource type="Resource" id="Resource_wupf4"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["hi?"])
+success = true
+
+[sub_resource type="Resource" id="Resource_7inx6"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["you're starting to bother me"])
+success = true
+
+[sub_resource type="Resource" id="Resource_t418f"]
+script = ExtResource("7_hu76q")
+success = true
+
+[sub_resource type="Resource" id="Resource_uboeo"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["okay go away now"])
+success = true
+
+[sub_resource type="Resource" id="Resource_vkxks"]
+script = ExtResource("8_xsc6j")
+flag_name = &"vat mad"
+value = true
+success = true
+
+[sub_resource type="Resource" id="Resource_qvxfv"]
+script = ExtResource("6_qgs6m")
+success = true
+
+[sub_resource type="Resource" id="Resource_77v5o"]
+script = ExtResource("6_hl4nq")
+list_mode = 1
+events = Array[ExtResource("5_aicyk")]([SubResource("Resource_uboeo"), SubResource("Resource_vkxks"), SubResource("Resource_qvxfv")])
+success = true
+
+[sub_resource type="Resource" id="Resource_vym7p"]
+script = ExtResource("6_hl4nq")
+list_mode = 3
+events = Array[ExtResource("5_aicyk")]([SubResource("Resource_nkopw"), SubResource("Resource_wupf4"), SubResource("Resource_7inx6"), SubResource("Resource_t418f"), SubResource("Resource_77v5o")])
+success = true
+
+[sub_resource type="Resource" id="Resource_ow2rc"]
+script = ExtResource("7_hu76q")
+success = true
+
+[sub_resource type="Resource" id="Resource_1qjvc"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["you just gonna let that guy talk to you like that?", "wow, alright"])
+success = true
+
+[sub_resource type="Resource" id="Resource_jj53u"]
+script = ExtResource("10_lsmw4")
+_flag_name = &"vat mad"
+_true_event = SubResource("Resource_1qjvc")
+_false_event = SubResource("Resource_ow2rc")
+success = true
+
+[sub_resource type="Resource" id="Resource_4nq2r"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["hi :)"])
+success = true
+
+[sub_resource type="Resource" id="Resource_f6645"]
+script = ExtResource("6_cu6w5")
+messages = Array[String](["bitch"])
+success = true
+
+[sub_resource type="Resource" id="Resource_k38pe"]
+script = ExtResource("10_lsmw4")
+_flag_name = &"said hello"
+_true_event = SubResource("Resource_f6645")
+_false_event = SubResource("Resource_4nq2r")
+success = true
+
+[node name="Level" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_fo7y3")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[node name="Tiles_FG1" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAD///3/AgACAAEAAAAAAP3/AgADAAEAAAD9////AgAAAAEAAAD+////AgABAAEAAAABAP//AgAAAAEAAAACAP//AgABAAEAAAA=")
+tile_set = ExtResource("1_ev1ot")
+
+[node name="Tiles_FG2" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAD///z/AgACAAAAAAAAAPz/AgADAAAAAAD9//7/AgAAAAAAAAD+//7/AgABAAAAAAABAP7/AgAAAAAAAAACAP7/AgABAAAAAAA=")
+tile_set = ExtResource("1_ev1ot")
+
+[node name="Vat" parent="." instance=ExtResource("2_otl0o")]
+script = ExtResource("3_0tog6")
+current_event = SubResource("Resource_vym7p")
+
+[node name="Vat2" parent="." instance=ExtResource("2_otl0o")]
+position = Vector2(-32, -16)
+script = ExtResource("3_0tog6")
+current_event = SubResource("Resource_jj53u")
+
+[node name="Vat3" parent="." instance=ExtResource("2_otl0o")]
+position = Vector2(32, -16)
+script = ExtResource("3_0tog6")
+current_event = SubResource("Resource_k38pe")
+
+[node name="Player" parent="." instance=ExtResource("3_io516")]

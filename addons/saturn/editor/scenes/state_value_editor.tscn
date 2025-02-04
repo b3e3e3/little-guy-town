@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://8n0r56f0f8g1"]
+
+[ext_resource type="Script" path="res://addons/saturn/editor/scripts/state_value_editor.gd" id="1_ol8fq"]
+
+[node name="State Value Editor" type="ConfirmationDialog" node_paths=PackedStringArray("state_dropdown", "state_input", "error_label")]
+title = "Add state"
+initial_position = 2
+size = Vector2i(500, 250)
+visible = true
+unresizable = true
+dialog_hide_on_ok = false
+script = ExtResource("1_ol8fq")
+state_dropdown = NodePath("ValueState/StateDropdown")
+state_input = NodePath("ValueState/State")
+error_label = NodePath("")
+
+[node name="ValueState" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 201.0
+
+[node name="Label" type="Label" parent="ValueState"]
+layout_mode = 2
+text = "State"
+
+[node name="State" type="SpinBox" parent="ValueState"]
+layout_mode = 2
+max_value = 99999.0
+
+[node name="StateDropdown" type="OptionButton" parent="ValueState"]
+layout_mode = 2
