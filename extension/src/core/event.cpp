@@ -60,6 +60,7 @@ void Event::finish()
 void Event::_event_process()
 {
 	UtilityFunctions::print("event default behavior");
+	finish();
 }
 void Event::_on_finished() {}
 // void Event::_create() {}
