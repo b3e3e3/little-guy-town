@@ -1,2 +1,5 @@
+.cache/
 bin/
 src/*.os
+src/**/*.obj
+src/**/*.obj.import
