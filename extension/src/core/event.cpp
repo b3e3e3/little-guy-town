@@ -29,7 +29,7 @@ void Event::_bind_methods()
 
 Event::Event()
 {
-	p_success = false;
+	p_success = true;
 	p_status = Status::NOT_STARTED;
 }
 
@@ -37,8 +37,8 @@ Event::~Event() {}
 
 void Event::step()
 {
-	// p_status = Estatus::HAS_FINISHED;
-	p_status = Status::IN_PROGRESS;
+	p_status = Status::HAS_FINISHED;
+	// p_status = Status::IN_PROGRESS;
 	emit_signal("stepped");
 }
 
@@ -60,7 +60,7 @@ void Event::finish()
 void Event::_event_process()
 {
 	UtilityFunctions::print("event default behavior");
-	finish();
+	call_deferred("finish");
 }
 void Event::_on_finished() {}
 // void Event::_create() {}
