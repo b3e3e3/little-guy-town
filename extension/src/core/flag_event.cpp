@@ -1,5 +1,4 @@
 #include "flag_event.h"
-#include "flags.h"
 
 using namespace godot;
 

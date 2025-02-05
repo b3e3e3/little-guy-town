@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://biacrer41vrt"]
+[gd_scene load_steps=11 format=4 uid="uid://biacrer41vrt"]
 
 [ext_resource type="TileSet" uid="uid://bxe3d552q33mr" path="res://tiles/freak_vats.tres" id="1_ev1ot"]
 [ext_resource type="Script" uid="uid://evskevrh2t1y" path="res://Level1.gd" id="1_fo7y3"]
@@ -6,8 +6,13 @@
 [ext_resource type="Script" uid="uid://bfk3u2gehwrks" path="res://Interact/EventTriggerer.gd" id="3_0tog6"]
 [ext_resource type="PackedScene" uid="uid://0uy84yww8fiu" path="res://Player.tscn" id="3_io516"]
 
+[sub_resource type="FoobarEvent" id="FoobarEvent_f2txt"]
+
+[sub_resource type="FoobarEvent" id="FoobarEvent_1ainy"]
+
 [sub_resource type="MultiEvent" id="MultiEvent_f2txt"]
-list_mode = 0
+list_mode = 3
+events = Array[Event]([SubResource("FoobarEvent_f2txt"), SubResource("FoobarEvent_1ainy")])
 
 [sub_resource type="Resource" id="Resource_jj53u"]
 
@@ -35,11 +40,13 @@ script = ExtResource("3_0tog6")
 current_event = SubResource("MultiEvent_f2txt")
 
 [node name="Vat2" parent="." instance=ExtResource("2_otl0o")]
+visible = false
 position = Vector2(-32, -16)
 script = ExtResource("3_0tog6")
 current_event = SubResource("Resource_jj53u")
 
 [node name="Vat3" parent="." instance=ExtResource("2_otl0o")]
+visible = false
 position = Vector2(32, -16)
 script = ExtResource("3_0tog6")
 current_event = SubResource("Resource_k38pe")

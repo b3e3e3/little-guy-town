@@ -12,11 +12,8 @@ class GuardEvent : public Event
 private:
 	StringName p_flag_name;
 	Ref<Event> p_true_event;
-	Ref<Event> p_false_event; //= NothingEvent.new()
+	Ref<Event> p_false_event;
 	Ref<Event> p_current_event;
-
-	// protected:
-	// 	void _on_current_event_finished();
 
 public:
 	static void _bind_methods();
@@ -37,9 +34,9 @@ public:
 	void set_current_event(const Ref<Event> &value) { p_current_event = value; }
 
 	// Implement the virtual functions from Event
-	virtual void _event_process() override;
-	// virtual void _on_finished() override;
-	// virtual void _create() override;
+	void _event_process() override;
+	void _on_finished() override {}
+	void _create() override {}
 };
 } // namespace godot
 #endif

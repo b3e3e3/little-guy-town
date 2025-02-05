@@ -1,10 +1,14 @@
 #include "foobar_event.h"
-#include "godot_cpp/classes/time.hpp"
 
 using namespace godot;
 
 void FoobarEvent::_event_process()
 {
-	UtilityFunctions::print("Foobar! " + String::num_int64(Time::get_singleton()->get_unix_time_from_system()));
+	UtilityFunctions::print("Foobar! " + p_id);
 	Event::_event_process();
+}
+godot::FoobarEvent::FoobarEvent() :
+		Event()
+{
+	p_id = String::num_int64(Time::get_singleton()->get_unix_time_from_system());
 }

@@ -42,10 +42,12 @@ public:
 	int get_status() const { return (int)p_status; }
 	void set_status(const int &value) { p_status = (Status)value; }
 
-	virtual void _event_process();
-	virtual void _on_finished();
-	// virtual void _create();
-	// virtual void _init();
+	virtual void _event_process()
+	{
+		call_deferred("finish");
+	}
+	virtual void _on_finished() = 0;
+	virtual void _create() = 0;
 };
 
 } // namespace godot

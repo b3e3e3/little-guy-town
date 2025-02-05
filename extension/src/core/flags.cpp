@@ -34,11 +34,7 @@ Dictionary Flags::get_flags()
 
 bool Flags::get_flag(const String &flag_name)
 {
-	if (p_flags.has(flag_name)) {
-		return p_flags[flag_name];
-	}
-
-	return false;
+	return p_flags.has(flag_name) ? bool(p_flags[flag_name]) : false;
 }
 
 void Flags::set_flag(const String &flag_name, const bool value)

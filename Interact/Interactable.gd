@@ -15,7 +15,7 @@ func _exit_tree():
 
 
 func interact(with: Node):
-	#print_debug("interaction started")
+	#print_debug("interaction started (%s)" % with)
 	interacted.emit(with)
 
 func finish():

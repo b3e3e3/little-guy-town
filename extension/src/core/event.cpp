@@ -14,7 +14,7 @@ void Event::_bind_methods()
 
 	ClassDB::bind_method(D_METHOD("_event_process"), &Event::_event_process);
 	ClassDB::bind_method(D_METHOD("_on_finished"), &Event::_on_finished);
-	// ClassDB::bind_method(D_METHOD("_create"), &Event::_create);
+	ClassDB::bind_method(D_METHOD("_create"), &Event::_create);
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "success"), "set_success",
 			"get_success");
@@ -31,6 +31,9 @@ Event::Event()
 {
 	p_success = true;
 	p_status = Status::NOT_STARTED;
+
+	connect("stepped", Callable(this, "_event_process"));
+	connect("finished", Callable(this, "_on_finished"));
 }
 
 Event::~Event() {}
@@ -56,11 +59,3 @@ void Event::finish()
 		p_callback.call();
 	}
 }
-
-void Event::_event_process()
-{
-	UtilityFunctions::print("event default behavior");
-	call_deferred("finish");
-}
-void Event::_on_finished() {}
-// void Event::_create() {}

@@ -37,15 +37,18 @@ public:
 	int get_list_mode() { return (int)p_list_mode; }
 
 	GETSET(TypedArray<Event>, events, p_events)
-	// TypedArray<Event> get_events();
 
 	void reset();
 
 	TypedArray<Event> get_ready_events();
 
+	void reset_all();
+
 	void on_event_finished(Ref<Event> event, TypedArray<Event> ready_events);
 
 	void _event_process() override;
+	void _on_finished() override {}
+	void _create() override {}
 };
 } // namespace godot
 VARIANT_ENUM_CAST(MultiEvent::ListMode)

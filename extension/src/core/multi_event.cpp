@@ -1,6 +1,7 @@
 #include "multi_event.h"
 #include "godot_cpp/classes/global_constants.hpp"
 #include "godot_cpp/core/class_db.hpp"
+#include "godot_cpp/variant/utility_functions.hpp"
 
 using namespace godot;
 
@@ -18,7 +19,7 @@ void MultiEvent::_bind_methods()
 	ClassDB::bind_method(D_METHOD("set_events", "value"), &MultiEvent::set_events);
 	ClassDB::bind_method(D_METHOD("get_events"), &MultiEvent::get_events);
 
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "list_mode"), "set_list_mode",
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "list_mode", PROPERTY_HINT_ENUM, "Queue Loop,Run All At Once,Queue Clear When Done,Queue Clear And Loop Last"), "set_list_mode",
 			"get_list_mode");
 
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "events", PROPERTY_HINT_ARRAY_TYPE, String::num(Variant::OBJECT) + "/" + String::num(PROPERTY_HINT_RESOURCE_TYPE) + ":Event"),
@@ -49,17 +50,23 @@ TypedArray<Event> godot::MultiEvent::get_ready_events()
 	}
 	return filtered;
 }
+
+void MultiEvent::reset_all()
+{
+	for (int i = 0; i < p_events.size(); i++) {
+		Ref<Event> e = p_events[i];
+		e->reset();
+	}
+}
+
 void godot::MultiEvent::on_event_finished(Ref<Event> event, TypedArray<Event> ready_events)
 {
+	UtilityFunctions::print("Ready events: " + String::num_int64(ready_events.size()));
 	switch (p_list_mode) {
 		case ListMode::QUEUE_LOOP:
 			// if this is the last event, reset all events
 			if (ready_events.size() == 1) {
-				for (int i = 0; i < p_events.size(); i++) {
-					Ref<Event> e = p_events[i];
-					// e.instantiate();
-					e->reset();
-				}
+				reset_all();
 			}
 			break;
 		case ListMode::RUN_ALL_AT_ONCE:
@@ -70,11 +77,7 @@ void godot::MultiEvent::on_event_finished(Ref<Event> event, TypedArray<Event> re
 			}
 			else {
 				// if this is the last event, reset all events to be run again
-				for (int i = 0; i < p_events.size(); i++) {
-					Ref<Event> e = p_events[i];
-					// e.instantiate();
-					e->reset();
-				}
+				reset_all();
 			}
 			break;
 		case ListMode::QUEUE_CLEAR_WHEN_DONE:
@@ -88,23 +91,29 @@ void godot::MultiEvent::on_event_finished(Ref<Event> event, TypedArray<Event> re
 	}
 
 	// finish after the event does. this line is never reached for RUN_ALL_AT_ONCE
-	finish();
+	call_deferred("finish");
 }
 void godot::MultiEvent::_event_process()
 {
 	// get events that have not been started yet
 	TypedArray<Event> ready_events = get_ready_events();
 
-	// get next event
-	// Event &event = ready_events.front()->get();
-	Ref<Event> event = ready_events.front();
-	// event.instantiate();
+	if (ready_events.size() > 0) {
+		// get next event
+		Ref<Event> event = ready_events.front();
 
-	// start the ready event
-	event->step();
+		if (!event.is_null()) {
+			// start the ready event
+			event->step();
 
-	event->connect("finished",
-			callable_mp(this, &MultiEvent::on_event_finished)
-					.bind(&event, &ready_events),
-			ConnectFlags::CONNECT_ONE_SHOT);
+			event->connect("finished",
+					callable_mp(this, &MultiEvent::on_event_finished)
+							.bind(event, ready_events),
+					ConnectFlags::CONNECT_ONE_SHOT);
+
+			return; // early return so we dont... finish early... 😳
+		}
+	}
+
+	call_deferred("finish");
 }
