@@ -11,21 +11,21 @@ class MultiEvent : public Event
 {
 	GDCLASS(MultiEvent, Event)
 
-	// public:
-	// 	enum ListMode
-	// 	{
-	// 		// Loop over the queue
-	// 		QUEUE_LOOP,
-	// 		// Run all events at once
-	// 		RUN_ALL_AT_ONCE,
-	// 		// Clear each event from queue as it runs
-	// 		QUEUE_CLEAR_WHEN_DONE,
-	// 		// Clear each event from queue as it runs, but loop the last one
-	// 		QUEUE_CLEAR_AND_LOOP_LAST,
-	// 	};
+public:
+	enum ListMode
+	{
+		// Loop over the queue
+		QUEUE_LOOP,
+		// Run all events at once
+		RUN_ALL_AT_ONCE,
+		// Clear each event from queue as it runs
+		QUEUE_CLEAR_WHEN_DONE,
+		// Clear each event from queue as it runs, but loop the last one
+		QUEUE_CLEAR_AND_LOOP_LAST,
+	};
 
 protected:
-	// ListMode p_list_mode;
+	ListMode p_list_mode;
 	TypedArray<Event> p_events;
 
 public:
@@ -33,8 +33,8 @@ public:
 
 	MultiEvent();
 
-	// void set_list_mode(const int &value) { p_list_mode = (ListMode)value; }
-	// int get_list_mode() { return (int)p_list_mode; }
+	void set_list_mode(const int &value) { p_list_mode = (ListMode)value; }
+	int get_list_mode() { return (int)p_list_mode; }
 
 	GETSET(TypedArray<Event>, events, p_events)
 	// TypedArray<Event> get_events();
@@ -48,6 +48,6 @@ public:
 	void _event_process() override;
 };
 } // namespace godot
-// VARIANT_ENUM_CAST(MultiEvent::ListMode)
+VARIANT_ENUM_CAST(MultiEvent::ListMode)
 
 #endif

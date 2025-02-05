@@ -23,6 +23,7 @@ FlagEvent::~FlagEvent() {}
 
 void FlagEvent::_event_process()
 {
-	Flags::set_flag(p_flag_name, p_value);
+	// Flags::get_main()->set_flag(p_flag_name, p_value);
+	// TODO: set flag
 	Event::_event_process();
 }

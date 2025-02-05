@@ -13,18 +13,18 @@ class Event : public Resource
 {
 	GDCLASS(Event, Resource)
 
-	// public:
-	// 	enum Status
-	// 	{
-	// 		NOT_STARTED,
-	// 		IN_PROGRESS,
-	// 		HAS_FINISHED
-	// 	};
+public:
+	enum Status
+	{
+		NOT_STARTED,
+		IN_PROGRESS,
+		HAS_FINISHED
+	};
 
 protected:
 	Variant p_success;
 
-	// Status p_staxtus;
+	Status p_status;
 	Callable p_callback;
 
 public:
@@ -39,15 +39,15 @@ public:
 
 	GETSET(bool, success, p_success)
 
-	// int get_status() const { return (int)p_status; }
-	// void set_status(const int &value) { p_status = (Status)value; }
+	int get_status() const { return (int)p_status; }
+	void set_status(const int &value) { p_status = (Status)value; }
 
 	virtual void _event_process();
 	virtual void _on_finished();
-	virtual void _create();
+	// virtual void _create();
 	// virtual void _init();
 };
 
 } // namespace godot
-// VARIANT_ENUM_CAST(Event::Status);x
+VARIANT_ENUM_CAST(Event::Status);
 #endif

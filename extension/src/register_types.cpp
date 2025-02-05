@@ -17,20 +17,20 @@ void initialize_ventman_module(ModuleInitializationLevel p_level)
 		return;
 	}
 
-	// ClassDB::register_class<Flags>();
-	// UtilityFunctions::print("Registered Flags");
+	ClassDB::register_class<Flags>();
+	UtilityFunctions::print("Registered Flags");
 
 	ClassDB::register_class<Event>();
 	UtilityFunctions::print("Registered Event");
 
-	// ClassDB::register_class<FlagEvent>();
-	// UtilityFunctions::print("Registered FlagEvent");
+	ClassDB::register_class<FlagEvent>();
+	UtilityFunctions::print("Registered FlagEvent");
 
-	// ClassDB::register_class<GuardEvent>();
-	// UtilityFunctions::print("Registered GuardEvent");
+	ClassDB::register_class<GuardEvent>();
+	UtilityFunctions::print("Registered GuardEvent");
 
-	// ClassDB::register_class<MultiEvent>();
-	// UtilityFunctions::print("Registered MultiEvent");
+	ClassDB::register_class<MultiEvent>();
+	UtilityFunctions::print("Registered MultiEvent");
 }
 
 void uninitialize_ventman_module(ModuleInitializationLevel p_level)

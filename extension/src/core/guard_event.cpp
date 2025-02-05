@@ -37,12 +37,13 @@ GuardEvent::~GuardEvent() {}
 void godot::GuardEvent::_event_process()
 {
 	UtilityFunctions::print("Checking guard");
-	bool flag = Flags::get_flag(p_flag_name);
+	// bool flag = Flags::get_main()->get_flag(p_flag_name);
+	// TODO: set flag
 
 	Ref<Event> current_event = p_false_event;
 	// current_event.instantiate();
 
-	if (flag) {
+	if (true) { //flag) { // TODO: FLAG!!
 		current_event = p_true_event;
 	}
 }

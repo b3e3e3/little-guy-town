@@ -28,6 +28,7 @@ func should_move() -> bool:
 	var should_stop := is_zero_approx(move_input.length_squared())
 	
 	if should_stop:
+		
 		if _is_moving:
 			stop.emit()
 	else:

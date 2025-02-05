@@ -1,4 +1,4 @@
-#extends Event
+extends Event
 #
 ## TODO: CommonEvent
 #
