@@ -6,7 +6,8 @@
 [ext_resource type="Script" uid="uid://bfk3u2gehwrks" path="res://Interact/EventTriggerer.gd" id="3_0tog6"]
 [ext_resource type="PackedScene" uid="uid://0uy84yww8fiu" path="res://Player.tscn" id="3_io516"]
 
-[sub_resource type="Resource" id="Resource_vym7p"]
+[sub_resource type="MultiEvent" id="MultiEvent_f2txt"]
+list_mode = 0
 
 [sub_resource type="Resource" id="Resource_jj53u"]
 
@@ -31,7 +32,7 @@ tile_set = ExtResource("1_ev1ot")
 
 [node name="Vat" parent="." instance=ExtResource("2_otl0o")]
 script = ExtResource("3_0tog6")
-current_event = SubResource("Resource_vym7p")
+current_event = SubResource("MultiEvent_f2txt")
 
 [node name="Vat2" parent="." instance=ExtResource("2_otl0o")]
 position = Vector2(-32, -16)

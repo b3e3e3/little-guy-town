@@ -36,7 +36,7 @@
         "output": "godot-cpp\\src\\core\\error_macros.windows.template_debug.x86_64.obj"
     },
     {
-        "command": "cl /Fogodot-cpp\\src\\core\\memory.windows.template_debug.x86_64.obj /c godot-cpp\\src\\core\\memory.cpp /TP /std:c++17 /nologo /utf-8 /MT /O2 /DTYPED_METHOD_BIND /DNOMINMAX /DWINDOWS_ENABLED /D_HAS_EXCEPTIONS=0 /DTHREADS_ENABLED /DHOT_RELOAD_ENABLED /DDEBUG_ENABLED /DDEBUG_METHODS_ENABLED /DNDEBUG /DGDEXTENSION /Igodot-cpp\\gdextension /Igodot-cpp\\include /Igodot-cpp\\gen\\include /Isrc",
+        "command": "cl /Fogodot-cpp\\src\\core\\memory.windows.template_debug.x86_64.obj /c godot-cpp\\src\\core\\memory.cpp /TP /std:c++17 /nologo /utf-8 /MT /O2 /DTYPED_METHOD_BIND /DNOMINMAX /DWINDOWS_ENABLED /D_HAS_EXCEPTIONS=0 /DTHREADS_ENABLED /DHOT_RELOAD_ENABLED /DDEBUG_ENABLED /DDEBUG_METHODS_ENABLED /DNDEBUG /DGDEXTENSION /Igodot-cpp\\gdextension /Igodot-cpp\\include /Igodot-cpp\\gen\\include /Igodot-cpp\\src",
         "directory": "C:\\Users\\jblik\\Documents\\little-guy-town new\\extension",
         "file": "godot-cpp\\src\\core\\memory.cpp",
         "output": "godot-cpp\\src\\core\\memory.windows.template_debug.x86_64.obj"

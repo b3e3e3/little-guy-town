@@ -1,4 +1,5 @@
 #include "multi_event.h"
+#include "godot_cpp/classes/global_constants.hpp"
 #include "godot_cpp/core/class_db.hpp"
 
 using namespace godot;
@@ -19,14 +20,17 @@ void MultiEvent::_bind_methods()
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "list_mode"), "set_list_mode",
 			"get_list_mode");
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "events"), "set_events",
-			"get_events"); // TODO: readonly
+
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "events", PROPERTY_HINT_ARRAY_TYPE, String::num(Variant::OBJECT) + "/" + String::num(PROPERTY_HINT_RESOURCE_TYPE) + ":Event"),
+			"set_events",
+			"get_events");
 
 	BIND_ENUM_CONSTANT(QUEUE_LOOP)
 	BIND_ENUM_CONSTANT(RUN_ALL_AT_ONCE)
 	BIND_ENUM_CONSTANT(QUEUE_CLEAR_WHEN_DONE)
 	BIND_ENUM_CONSTANT(QUEUE_CLEAR_AND_LOOP_LAST)
 }
+
 void godot::MultiEvent::reset()
 {
 	p_success = false;
