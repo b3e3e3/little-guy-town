@@ -6,6 +6,7 @@
 #include "core/event.h"
 #include "core/flag_event.h"
 #include "core/flags.h"
+#include "core/foobar_event.h"
 #include "core/guard_event.h"
 #include "core/multi_event.h"
 
@@ -22,6 +23,7 @@ void initialize_ventman_module(ModuleInitializationLevel p_level)
 	ClassDB::register_class<FlagEvent>();
 	ClassDB::register_class<GuardEvent>();
 	ClassDB::register_class<MultiEvent>();
+	ClassDB::register_class<FoobarEvent>();
 }
 
 void uninitialize_ventman_module(ModuleInitializationLevel p_level)

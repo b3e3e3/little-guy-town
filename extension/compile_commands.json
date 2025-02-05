@@ -5844,6 +5844,12 @@
         "output": "src\\core\\flags.windows.template_debug.x86_64.obj"
     },
     {
+        "command": "cl /Fosrc\\core\\foobar_event.windows.template_debug.x86_64.obj /c src\\core\\foobar_event.cpp /TP /std:c++17 /nologo /utf-8 /MT /O2 /DTYPED_METHOD_BIND /DNOMINMAX /DWINDOWS_ENABLED /D_HAS_EXCEPTIONS=0 /DTHREADS_ENABLED /DHOT_RELOAD_ENABLED /DDEBUG_ENABLED /DDEBUG_METHODS_ENABLED /DNDEBUG /DGDEXTENSION /Igodot-cpp\\gdextension /Igodot-cpp\\include /Igodot-cpp\\gen\\include /Isrc",
+        "directory": "C:\\Users\\jblik\\Documents\\little-guy-town new\\extension",
+        "file": "src\\core\\foobar_event.cpp",
+        "output": "src\\core\\foobar_event.windows.template_debug.x86_64.obj"
+    },
+    {
         "command": "cl /Fosrc\\core\\guard_event.windows.template_debug.x86_64.obj /c src\\core\\guard_event.cpp /TP /std:c++17 /nologo /utf-8 /MT /O2 /DTYPED_METHOD_BIND /DNOMINMAX /DWINDOWS_ENABLED /D_HAS_EXCEPTIONS=0 /DTHREADS_ENABLED /DHOT_RELOAD_ENABLED /DDEBUG_ENABLED /DDEBUG_METHODS_ENABLED /DNDEBUG /DGDEXTENSION /Igodot-cpp\\gdextension /Igodot-cpp\\include /Igodot-cpp\\gen\\include /Isrc",
         "directory": "C:\\Users\\jblik\\Documents\\little-guy-town new\\extension",
         "file": "src\\core\\guard_event.cpp",
