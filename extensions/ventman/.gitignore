@@ -11,4 +11,5 @@ src/**/*.obj.import
 config.log
 .sconf_temp
 
-**/std.err
+std.err
+*.pdb
