@@ -4,6 +4,8 @@ src/*.os
 src/**/*.obj
 src/**/*.obj.import
 
+**/.DS_Store/
+
 # for projects that use SCons for building: http://http://www.scons.org/
 .sconsign.dblite
 
