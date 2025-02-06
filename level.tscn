@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://biacrer41vrt"]
+[gd_scene load_steps=17 format=4 uid="uid://biacrer41vrt"]
 
 [ext_resource type="TileSet" uid="uid://bxe3d552q33mr" path="res://tiles/freak_vats.tres" id="1_ev1ot"]
 [ext_resource type="Script" uid="uid://evskevrh2t1y" path="res://Level1.gd" id="1_fo7y3"]
@@ -7,17 +7,46 @@
 [ext_resource type="PackedScene" uid="uid://0uy84yww8fiu" path="res://Player.tscn" id="3_io516"]
 [ext_resource type="Script" uid="uid://gxsn0e10iu4c" path="res://events/MessageEvent.gd" id="5_1ainy"]
 
-[sub_resource type="FoobarEvent" id="FoobarEvent_f2txt"]
-
 [sub_resource type="Event" id="Event_n6hdu"]
 script = ExtResource("5_1ainy")
-messages = Array[String](["hi", "are you ok?"])
+messages = Array[String](["hi", "need something?"])
 metadata/_custom_type_script = ExtResource("5_1ainy")
 
-[sub_resource type="MultiEvent" id="MultiEvent_f2txt"]
-events = Array[Event]([SubResource("FoobarEvent_f2txt"), SubResource("Event_n6hdu")])
+[sub_resource type="Event" id="Event_i2t4f"]
+script = ExtResource("5_1ainy")
+messages = Array[String](["hi", "that other guy is pretty rude huh"])
+metadata/_custom_type_script = ExtResource("5_1ainy")
 
-[sub_resource type="Resource" id="Resource_jj53u"]
+[sub_resource type="GuardEvent" id="GuardEvent_1ainy"]
+flag_name = &"pissed"
+true_event = SubResource("Event_i2t4f")
+false_event = SubResource("Event_n6hdu")
+
+[sub_resource type="MultiEvent" id="MultiEvent_f2txt"]
+list_mode = 0
+events = Array[Event]([SubResource("GuardEvent_1ainy")])
+
+[sub_resource type="Event" id="Event_km5ld"]
+script = ExtResource("5_1ainy")
+messages = Array[String](["please leave me alone"])
+metadata/_custom_type_script = ExtResource("5_1ainy")
+
+[sub_resource type="FlagEvent" id="FlagEvent_1ainy"]
+flag_name = &"pissed"
+value = true
+
+[sub_resource type="MultiEvent" id="MultiEvent_8cye3"]
+list_mode = 1
+events = Array[Event]([SubResource("Event_km5ld"), SubResource("FlagEvent_1ainy")])
+
+[sub_resource type="Event" id="Event_1ainy"]
+script = ExtResource("5_1ainy")
+messages = Array[String](["buzz off"])
+metadata/_custom_type_script = ExtResource("5_1ainy")
+
+[sub_resource type="MultiEvent" id="MultiEvent_n6hdu"]
+list_mode = 3
+events = Array[Event]([SubResource("MultiEvent_8cye3"), SubResource("Event_1ainy")])
 
 [sub_resource type="Resource" id="Resource_k38pe"]
 
@@ -46,7 +75,7 @@ current_event = SubResource("MultiEvent_f2txt")
 visible = false
 position = Vector2(-32, -16)
 script = ExtResource("3_0tog6")
-current_event = SubResource("Resource_jj53u")
+current_event = SubResource("MultiEvent_n6hdu")
 
 [node name="Vat3" parent="." instance=ExtResource("2_otl0o")]
 visible = false
