@@ -2,10 +2,10 @@
 
 using namespace godot;
 
-void FoobarEvent::_event_process()
+void FoobarEvent::internal_event_process()
 {
 	UtilityFunctions::print("Foobar! " + p_id);
-	Event::_event_process();
+	Event::internal_event_process();
 }
 godot::FoobarEvent::FoobarEvent() :
 		Event()

@@ -1,5 +1,6 @@
 #include "event.h"
 #include "godot_cpp/core/class_db.hpp"
+#include "godot_cpp/variant/utility_functions.hpp"
 
 using namespace godot;
 
@@ -12,9 +13,16 @@ void Event::_bind_methods()
 	ClassDB::bind_method(D_METHOD("reset"), &Event::reset);
 	ClassDB::bind_method(D_METHOD("finish"), &Event::finish);
 
-	ClassDB::bind_method(D_METHOD("_event_process"), &Event::_event_process);
+	// ClassDB::bind_method(D_METHOD("_event_process"), &Event::event_process);
+	// ClassDB::bind_method(D_METHOD("_event_finished"), &Event::event_finished);
+	// ClassDB::bind_method(D_METHOD("_event_create"), &Event::event_create);
+
+	ClassDB::bind_method(D_METHOD("_on_stepped"), &Event::_on_stepped);
 	ClassDB::bind_method(D_METHOD("_on_finished"), &Event::_on_finished);
-	ClassDB::bind_method(D_METHOD("_create"), &Event::_create);
+
+	BIND_VIRTUAL_METHOD(Event, /*internal_*/ event_process)
+	BIND_VIRTUAL_METHOD(Event, /*internal_*/ event_finished)
+	BIND_VIRTUAL_METHOD(Event, /*internal_*/ event_create)
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "success"), "set_success",
 			"get_success");
@@ -32,7 +40,7 @@ Event::Event()
 	p_success = true;
 	p_status = Status::NOT_STARTED;
 
-	connect("stepped", Callable(this, "_event_process"));
+	connect("stepped", Callable(this, "_on_stepped"));
 	connect("finished", Callable(this, "_on_finished"));
 }
 
@@ -59,3 +67,19 @@ void Event::finish()
 		p_callback.call();
 	}
 }
+#pragma region Virtuals
+void godot::Event::internal_event_process()
+{
+	// UtilityFunctions::print("Default internal event process");
+	call_deferred("finish");
+}
+void godot::Event::internal_event_finished()
+{
+	// UtilityFunctions::print("Default internal finished");
+}
+void godot::Event::internal_event_create()
+{
+	// UtilityFunctions::print("Default internal create");
+}
+
+#pragma endregion

@@ -46,9 +46,9 @@ public:
 
 	void on_event_finished(Ref<Event> event, TypedArray<Event> ready_events);
 
-	void _event_process() override;
-	void _on_finished() override {}
-	void _create() override {}
+#pragma region Virtuals
+	void internal_event_process() override;
+#pragma endregion
 };
 } // namespace godot
 VARIANT_ENUM_CAST(MultiEvent::ListMode)

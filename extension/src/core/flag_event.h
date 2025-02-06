@@ -24,9 +24,7 @@ public:
 	GETSET(bool, value, p_value)
 
 	// Implement the virtual functions from Event
-	void _event_process() override;
-	void _on_finished() override {}
-	void _create() override {}
+	void internal_event_process() override;
 };
 } // namespace godot
 #endif

@@ -18,9 +18,7 @@ public:
 
 	static void _bind_methods() {}
 
-	void _event_process() override;
-	void _on_finished() override {}
-	void _create() override {}
+	void internal_event_process() override;
 };
 } // namespace godot
 #endif

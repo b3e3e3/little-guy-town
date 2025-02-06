@@ -1,11 +1,24 @@
 #ifndef EVENT
 #define EVENT
 
-// #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/classes/resource.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
+#include <godot_cpp/core/binder_common.hpp>
+#include <godot_cpp/core/gdvirtual.gen.inc>
+
 #include "../util/getset.hpp"
+#include "godot_cpp/classes/wrapped.hpp"
+
+#define EVENT_VIRTUAL_WRAPPER(method_name)             \
+	void method_name()                                 \
+	{                                                  \
+		if (GDVIRTUAL_IS_OVERRIDDEN(_##method_name)) { \
+			GDVIRTUAL_CALL(_##method_name);            \
+			return;                                    \
+		}                                              \
+		internal_##method_name();                      \
+	}
 
 namespace godot {
 
@@ -27,6 +40,18 @@ protected:
 	Status p_status;
 	Callable p_callback;
 
+	void _on_stepped()
+	{
+		// UtilityFunctions::print("on stepped, even");
+		Event::event_process();
+	}
+
+	void _on_finished()
+	{
+		// UtilityFunctions::print("on finished, even");
+		Event::event_finished();
+	}
+
 public:
 	static void _bind_methods();
 
@@ -42,12 +67,20 @@ public:
 	int get_status() const { return (int)p_status; }
 	void set_status(const int &value) { p_status = (Status)value; }
 
-	virtual void _event_process()
-	{
-		call_deferred("finish");
-	}
-	virtual void _on_finished() = 0;
-	virtual void _create() = 0;
+	EVENT_VIRTUAL_WRAPPER(event_process)
+	EVENT_VIRTUAL_WRAPPER(event_finished)
+	EVENT_VIRTUAL_WRAPPER(event_create)
+
+#pragma region Virtuals
+	GDVIRTUAL0(_event_process)
+	virtual void internal_event_process();
+
+	GDVIRTUAL0(_event_finished)
+	virtual void internal_event_finished();
+
+	GDVIRTUAL0(_event_create)
+	virtual void internal_event_create();
+#pragma endregion
 };
 
 } // namespace godot

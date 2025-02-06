@@ -20,9 +20,9 @@ FlagEvent::FlagEvent() :
 
 FlagEvent::~FlagEvent() {}
 
-void FlagEvent::_event_process()
+void FlagEvent::internal_event_process()
 {
 	// Flags::get_main()->set_flag(p_flag_name, p_value);
 	// TODO: set flag
-	Event::_event_process();
+	Event::internal_event_process();
 }

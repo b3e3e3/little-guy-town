@@ -72,7 +72,8 @@ void godot::MultiEvent::on_event_finished(Ref<Event> event, TypedArray<Event> re
 		case ListMode::RUN_ALL_AT_ONCE:
 			// if we have more events than this one ready, run again
 			if (ready_events.size() > 1) {
-				call_deferred("_event_process"); // TODO: deferred?
+				// call_deferred("_event_process"); // TODO: deferred?
+				Event::event_process();
 				return; // don't finish
 			}
 			else {
@@ -93,7 +94,7 @@ void godot::MultiEvent::on_event_finished(Ref<Event> event, TypedArray<Event> re
 	// finish after the event does. this line is never reached for RUN_ALL_AT_ONCE
 	call_deferred("finish");
 }
-void godot::MultiEvent::_event_process()
+void godot::MultiEvent::internal_event_process()
 {
 	// get events that have not been started yet
 	TypedArray<Event> ready_events = get_ready_events();
@@ -109,7 +110,7 @@ void godot::MultiEvent::_event_process()
 			event->connect("finished",
 					callable_mp(this, &MultiEvent::on_event_finished)
 							.bind(event, ready_events),
-					ConnectFlags::CONNECT_ONE_SHOT);
+					ConnectFlags::CONNECT_ONE_SHOT); // TODO: disconnect
 
 			return; // early return so we dont... finish early... 😳
 		}
