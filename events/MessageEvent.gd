@@ -14,6 +14,9 @@ var textbox: Textbox:
 func set_textbox(new: Textbox):
 	print("set textbox\n", new)
 	_textbox = new
+	
+func _event_create():
+	print("created message event")
 
 func _event_process():
 	print("Starting message event with %s message(s)" % messages.size())
