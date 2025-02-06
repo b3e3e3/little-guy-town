@@ -70,16 +70,9 @@ void Event::finish()
 #pragma region Virtuals
 void godot::Event::internal_event_process()
 {
-	// UtilityFunctions::print("Default internal event process");
 	call_deferred("finish");
 }
-void godot::Event::internal_event_finished()
-{
-	// UtilityFunctions::print("Default internal finished");
-}
-void godot::Event::internal_event_create()
-{
-	// UtilityFunctions::print("Default internal create");
-}
+void godot::Event::internal_event_finished() {}
+void godot::Event::internal_event_create() {}
 
 #pragma endregion

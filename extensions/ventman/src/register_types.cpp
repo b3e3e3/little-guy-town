@@ -19,7 +19,6 @@ void initialize_ventman_module(ModuleInitializationLevel p_level)
 	}
 
 	ClassDB::register_class<Flags>();
-	// GDREGISTER_ABSTRACT_CLASS(Event);
 	ClassDB::register_class<Event>();
 	ClassDB::register_class<FlagEvent>();
 	ClassDB::register_class<GuardEvent>();
