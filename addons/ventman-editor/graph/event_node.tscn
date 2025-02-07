@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cshk0egybh46u"]
+
+[ext_resource type="Script" uid="uid://duqqqcr8lwfpo" path="res://addons/ventman-editor/graph/event_node.gd" id="1_yi2d3"]
+
+[node name="EventNode" type="GraphNode"]
+anchors_preset = -1
+anchor_right = 0.309375
+anchor_bottom = 0.180357
+grow_horizontal = 2
+grow_vertical = 2
+resizable = true
+title = "New Event"
+script = ExtResource("1_yi2d3")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="delete_request" from="." to="." method="_on_delete_request"]
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
