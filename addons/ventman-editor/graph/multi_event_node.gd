@@ -8,12 +8,27 @@ signal connection_created(from_node: StringName, from_port: int, to_node: String
 signal connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
 
 var add_button: Button
+var node_dropdown: OptionButton
 
 func _ready():
 	add_button = Button.new()
 	add_button.text = "Add Event"
 	add_button.connect("pressed", _add_event_ui)
-	add_child(add_button)
+	
+	# Create and setup node dropdown
+	node_dropdown = OptionButton.new()
+	node_dropdown.add_item("Global Option 1", 0)
+	node_dropdown.add_item("Global Option 2", 1)
+	node_dropdown.add_item("Global Option 3", 2)
+	node_dropdown.connect("item_selected", _on_node_dropdown_selected)
+	
+	# Create a container for the controls
+	var controls = HBoxContainer.new()
+	controls.name = "Controls" # Set a name to identify it
+	controls.add_child(add_button)
+	controls.add_child(node_dropdown)
+	
+	add_child(controls)
 	
 	var connect_func = func():
 		_connect_to_graph()
@@ -40,15 +55,16 @@ func _connect_to_graph() -> void:
 		connection_created.connect(parent.connect_node)
 		parent.connection_request.connect(_on_connection_request)
 		parent.disconnection_request.connect(_on_disconnection_request)
+		parent.child_exiting_tree.connect(_on_node_deleted) # Add this line
 	else:
 		push_error("Event node parent is not GraphNode. %s" % [parent.get_path()])
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	if from_node == name:
-		# We're the source of the connection, update our event label
-		var target_node = get_parent().get_node(NodePath(to_node))
 		var event_row = get_child(from_port)
 		if event_row is HBoxContainer:
+			event_row.modulate = Color(1.0, 1.0, 1.0, 0.7) # Visual feedback
+			var target_node = get_parent().get_node(NodePath(to_node))
 			var label = event_row.get_child(0)
 			label.text = target_node.title
 
@@ -67,11 +83,22 @@ func _add_event_ui(sub_event = null) -> HBoxContainer:
 		
 	var row = HBoxContainer.new()
 	var label := Label.new()
+	# var dropdown := OptionButton.new()
 
+	# Setup label
 	label.set("text", sub_event.name if sub_event else "New Event")
 	
-	row.add_child(label)
+	# Setup dropdown
+	# dropdown.add_item("Option 1", 0)
+	# dropdown.add_item("Option 2", 1)
+	# dropdown.add_item("Option 3", 2)
+	# dropdown.connect("item_selected", func(index): _on_dropdown_selected(row, index))
 	
+	# Add elements to row
+	row.add_child(label)
+	# row.add_child(dropdown)
+	
+	# Add control buttons
 	var buttons = [
 		["X", _remove_event],
 		["↑", _move_event, -1],
@@ -173,7 +200,8 @@ func _get_event_rows() -> Array[HBoxContainer]:
 	var nodes = get_children()
 	var event_rows: Array[HBoxContainer] = []
 	for node in nodes:
-		if node is HBoxContainer and node != add_button:
+		# Skip the controls container (which contains add_button and node_dropdown)
+		if node is HBoxContainer and node != get_node_or_null("Controls"):
 			event_rows.append(node)
 	return event_rows
 
@@ -188,35 +216,76 @@ func _update_slots() -> void:
 	# Update slots using the array index rather than child index
 	for i in event_rows.size():
 		var row = event_rows[i]
+		var row_idx = row.get_index() # Get the actual index in the node's children
 		
 		# Set up slots based on position in event_rows array
-		set_slot_enabled_left(i, i == 0) # Only first event gets left slot
-		set_slot_enabled_right(i, true) # All events get right slot
-		set_slot_color_left(i, Color.WHITE)
-		set_slot_color_right(i, Color.WHITE)
-		set_slot_type_left(i, 0)
-		set_slot_type_right(i, 0)
+		set_slot_enabled_left(row_idx, i == 0) # Only first event gets left slot
+		set_slot_enabled_right(row_idx, true) # All events get right slot
+		set_slot_color_left(row_idx, Color.WHITE)
+		set_slot_color_right(row_idx, Color.WHITE)
+		set_slot_type_left(row_idx, 0)
+		set_slot_type_right(row_idx, 0)
 
 func get_event_data() -> Dictionary:
-	return {
+	var data = {
 		"type": "MultiEvent",
-		"events": _get_event_rows().map(func(c): return {"name": c.get_child(0).text})
+		"node_option": node_dropdown.selected,
+		"events": _get_event_rows().map(func(c):
+			return {
+				"name": c.get_child(0).text,
+				# "option": c.get_child(1).selected
+			})
 	}
+	return data
 
 func set_event_data(data: Dictionary) -> void:
 	if data.type != "MultiEvent":
 		push_error("Invalid event type: %s" % data.type)
 		return
-		
-	# Wait for existing rows to be freed before adding new ones
+	
+	# Restore node dropdown state
+	node_dropdown.selected = data.get("node_option", 0)
+	
+	# Clear existing rows
 	var rows = _get_event_rows()
 	for row in rows:
-		_disconnect_port(row.get_index()) # Disconnect before removing
+		_disconnect_port(row.get_index())
 		remove_child(row)
 		row.queue_free()
 	
-	# Add new rows
+	# Add new rows with stored dropdown selections
 	for event_data in data.events:
-		_add_event_ui(event_data)
+		var row = _add_event_ui(event_data)
+		if row:
+			var dropdown = row.get_child(1) as OptionButton
+			dropdown.selected = event_data.get("option", 0) # Restore dropdown selection
 	
 	_update_slots()
+
+func _on_dropdown_selected(row: HBoxContainer, index: int) -> void:
+	var dropdown := row.get_child(1) as OptionButton
+	var label := row.get_child(0) as Label
+	# Do something with the selection
+	print("Row %s selected option: %s" % [row.get_index(), dropdown.get_item_text(index)])
+
+func _on_node_dropdown_selected(index: int) -> void:
+	print("Node dropdown selected: %s" % node_dropdown.get_item_text(index))
+	# Add your custom logic here
+
+# Add this new function to handle node deletion
+func _on_node_deleted(node: Node) -> void:
+	# Check if the deleted node was connected to any of our events
+	var event_rows = _get_event_rows()
+	for row in event_rows:
+		var row_idx = row.get_index()
+		var connections = _get_connections_for_port(row_idx)
+		
+		for c in connections:
+			if (c.to_node == node.name) or (c.from_node == node.name):
+				# Disconnect this connection
+				connection_removed.emit(c.from_node, c.from_port, c.to_node, c.to_port)
+				# Reset the label if this was our outgoing connection
+				if c.from_node == name:
+					var label = row.get_child(0)
+					label.text = "New Event"
+					row.modulate = Color.WHITE
