@@ -1,16 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://cshk0egybh46u"]
+[gd_scene load_steps=4 format=3 uid="uid://cshk0egybh46u"]
 
 [ext_resource type="Script" uid="uid://duqqqcr8lwfpo" path="res://addons/ventman-editor/graph/event_node.gd" id="1_yi2d3"]
+[ext_resource type="Script" uid="uid://gxsn0e10iu4c" path="res://events/MessageEvent.gd" id="2_vx0b2"]
+
+[sub_resource type="Event" id="Event_raxaj"]
+script = ExtResource("2_vx0b2")
+messages = Array[String](["sup"])
+metadata/_custom_type_script = ExtResource("2_vx0b2")
 
 [node name="EventNode" type="GraphNode"]
 anchors_preset = -1
 anchor_right = 0.309375
 anchor_bottom = 0.180357
+offset_bottom = 59.0001
 grow_horizontal = 2
 grow_vertical = 2
 resizable = true
-title = "New Event"
+title = "New event"
 script = ExtResource("1_yi2d3")
+event = SubResource("Event_raxaj")
 metadata/_edit_use_anchors_ = true
 
 [connection signal="delete_request" from="." to="." method="_on_delete_request"]

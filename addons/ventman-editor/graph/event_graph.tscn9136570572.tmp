@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cd176587nba5g"]
+[gd_scene load_steps=3 format=3 uid="uid://cd176587nba5g"]
 
 [ext_resource type="Script" uid="uid://cpcaauvmhscsp" path="res://addons/ventman-editor/graph/event_graph.gd" id="1_272st"]
-[ext_resource type="Script" uid="uid://dxb657b64blwb" path="res://addons/ventman-editor/graph/add_event_menu.gd" id="2_2joek"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vgmuc"]
 size = Vector2(32, 32)
@@ -17,7 +16,6 @@ script = ExtResource("1_272st")
 
 [node name="AddEventMenu" type="PopupMenu" parent="."]
 unique_name_in_owner = true
-script = ExtResource("2_2joek")
 
 [node name="Other" type="PopupMenu" parent="AddEventMenu"]
 unique_name_in_owner = true
@@ -62,11 +60,6 @@ icon = SubResource("PlaceholderTexture2D_vgmuc")
 
 [node name="Label" type="Label" parent="PanelContainer/GraphEdit/MarginContainer/HBoxContainer"]
 layout_mode = 2
-
-[node name="CheckBox" type="CheckBox" parent="."]
-layout_mode = 0
-offset_right = 24.0
-offset_bottom = 24.0
 
 [connection signal="child_entered_tree" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_child_entered_tree"]
 [connection signal="connection_request" from="PanelContainer/GraphEdit" to="." method="_on_graph_edit_connection_request"]

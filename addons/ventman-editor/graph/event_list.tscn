@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvmii6laq7veh"]
+
+[ext_resource type="Texture2D" uid="uid://db0hko1fxjxe8" path="res://dumb ass guy 2.png" id="1_dqmxv"]
+[ext_resource type="Script" uid="uid://b23g6uw00q2qc" path="res://addons/ventman-editor/graph/event_list.gd" id="2_e44em"]
+[ext_resource type="Script" uid="uid://erh73k4jivx" path="res://addons/ventman-editor/graph/rename_dialog.gd" id="3_e44em"]
+
+[node name="EventListContainer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_e44em")
+
+[node name="EventList" type="ItemList" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+select_mode = 1
+allow_rmb_select = true
+item_count = 1
+item_0/text = "chunko"
+item_0/icon = ExtResource("1_dqmxv")
+
+[node name="AddButton" type="Button" parent="."]
+layout_mode = 2
+text = "Add Item +"
+
+[node name="RightClickMenu" type="PopupMenu" parent="."]
+size = Vector2i(118, 151)
+item_count = 7
+item_0/text = "New..."
+item_0/id = 0
+item_1/text = "Duplicate"
+item_1/id = 1
+item_2/id = 2
+item_2/separator = true
+item_3/text = "Move up"
+item_3/id = 3
+item_4/text = "Move down"
+item_4/id = 4
+item_5/id = 5
+item_5/separator = true
+item_6/text = "Delete :("
+item_6/id = 6
+
+[node name="RenameDialog" type="ConfirmationDialog" parent="."]
+title = "Rename event"
+initial_position = 4
+size = Vector2i(256, 100)
+script = ExtResource("3_e44em")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RenameDialog"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 248.0
+offset_bottom = 51.0
+
+[node name="LineEdit" type="LineEdit" parent="RenameDialog/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New name..."
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="close_requested" from="RightClickMenu" to="." method="_on_right_click_menu_close_requested"]
+[connection signal="id_pressed" from="RightClickMenu" to="." method="_on_popup_menu_id_pressed"]
+[connection signal="focus_entered" from="RenameDialog" to="RenameDialog" method="_on_focus_entered"]
+[connection signal="text_changed" from="RenameDialog/VBoxContainer/LineEdit" to="RenameDialog" method="_on_line_edit_text_changed"]

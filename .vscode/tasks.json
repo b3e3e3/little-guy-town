@@ -8,12 +8,14 @@
       "group": "build",
       "type": "shell",
       "command": "scons",
+      "options": {
+        "cwd": "${workspaceFolder}/extensions/ventman"
+      },
       "args": [
-        "-j $(nproc)",
         "platform=windows",
         "target=template_debug",
         "compiledb=yes",
-        "debug_symbols=yes"
+        "debug_symbols=yes",
       ],
       "problemMatcher": "$msCompile"
     },
@@ -22,12 +24,14 @@
       "group": "build",
       "type": "shell",
       "command": "scons",
+      "options": {
+        "cwd": "${workspaceFolder}/extensions/ventman"
+      },
       "args": [
-        "-j $(nproc)",
         "platform=macos",
         "target=template_debug",
         "compiledb=yes",
-        "debug_symbols=yes"
+        "debug_symbols=yes",
       ],
     }
   ]

@@ -23,7 +23,7 @@ true_event = SubResource("Event_i2t4f")
 false_event = SubResource("Event_n6hdu")
 
 [sub_resource type="MultiEvent" id="MultiEvent_f2txt"]
-list_mode = 0
+list_mode = 585509
 events = Array[Event]([SubResource("GuardEvent_1ainy")])
 
 [sub_resource type="Event" id="Event_km5ld"]
@@ -33,7 +33,6 @@ metadata/_custom_type_script = ExtResource("5_1ainy")
 
 [sub_resource type="FlagEvent" id="FlagEvent_1ainy"]
 flag_name = &"pissed"
-value = true
 
 [sub_resource type="MultiEvent" id="MultiEvent_8cye3"]
 list_mode = 1
