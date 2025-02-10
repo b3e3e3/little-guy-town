@@ -33,6 +33,7 @@ metadata/_custom_type_script = ExtResource("5_1ainy")
 
 [sub_resource type="FlagEvent" id="FlagEvent_1ainy"]
 flag_name = &"pissed"
+value = false
 
 [sub_resource type="MultiEvent" id="MultiEvent_8cye3"]
 list_mode = 1

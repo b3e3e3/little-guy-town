@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://wuy87dfnx0pk"]
+
+[ext_resource type="Script" uid="uid://cl7r2jj2floso" path="res://addons/ventman-editor/graph/multi_event_node.gd" id="1_vwo5b"]
+
+[node name="MultiEventNode" type="GraphNode"]
+offset_left = 18.0
+offset_top = 51.0
+offset_right = 154.0
+offset_bottom = 139.0
+grow_horizontal = 2
+grow_vertical = 2
+resizable = true
+title = "New event"
+script = ExtResource("1_vwo5b")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="delete_request" from="." to="." method="_on_delete_request"]
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]

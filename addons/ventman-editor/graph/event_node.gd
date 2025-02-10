@@ -118,30 +118,30 @@ func add_control(control: Control) -> void:
 	add_child(control)
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	#event.flag_name = ""
-	#event.value = true
+# func _ready():
+# 	#event.flag_name = ""
+# 	#event.value = true
 	
-	# create input/output labels
-	var label_in_out := create_double_label("In", "Out")
-	add_control(label_in_out)
-	set_slot(
-		0,
-		true,
-		G_TYPE_EVENT,
-		Color.YELLOW,
-		true,
-		G_TYPE_EVENT,
-		Color.YELLOW
-	)
+# 	# create input/output labels
+# 	var label_in_out := create_double_label("In", "Out")
+# 	add_control(label_in_out)
+# 	set_slot(
+# 		0,
+# 		true,
+# 		G_TYPE_EVENT,
+# 		Color.YELLOW,
+# 		true,
+# 		G_TYPE_EVENT,
+# 		Color.YELLOW
+# 	)
 			
-	#var line_edit := LineEdit.new()
-	#line_edit.placeholder_text = "flag name"
-	#add_control(line_edit)
-	#
-	#var checkbox := CheckBox.new()
-	#checkbox.button_pressed = event.value
-	#add_control(checkbox)
+# 	#var line_edit := LineEdit.new()
+# 	#line_edit.placeholder_text = "flag name"
+# 	#add_control(line_edit)
+# 	#
+# 	#var checkbox := CheckBox.new()
+# 	#checkbox.button_pressed = event.value
+# 	#add_control(checkbox)
 
 
 func _on_delete_request():

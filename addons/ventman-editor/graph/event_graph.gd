@@ -9,7 +9,8 @@ extends Control
 var nodes: Dictionary[String, EventNode] = {}
 
 func _ready():
-	pass
+	%GraphEdit.add_child(MultiEventNode.new())
+	# pass
 
 func _on_new_button_pressed():
 	%AddEventMenu.popup_centered()
