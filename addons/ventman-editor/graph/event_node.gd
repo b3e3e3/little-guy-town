@@ -1,11 +1,87 @@
 extends GraphNode
 class_name EventNode
 
+signal connection_removed(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
+signal connection_created(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
+signal connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
+
+const MAX_SLOTS = 32
 const G_TYPE_EVENT = 0
 
 @onready var event_list_node: Resource = preload("event_list.tscn")
 
 @export var event: Event
+
+#region Setup
+func _connect_to_graph() -> void:
+	var parent := get_parent()
+	if parent is GraphEdit:
+		# Disconnect existing connections first to prevent duplicates
+		if connection_removed.is_connected(parent.disconnect_node):
+			connection_removed.disconnect(parent.disconnect_node)
+		if connection_created.is_connected(parent.connect_node):
+			connection_created.disconnect(parent.connect_node)
+			
+		connection_removed.connect(parent.disconnect_node)
+		connection_created.connect(parent.connect_node)
+		parent.connection_request.connect(_on_connection_request)
+		parent.disconnection_request.connect(_on_disconnection_request)
+		parent.child_exiting_tree.connect(_on_node_deleted) # Add this line
+	else:
+		push_error("Event node parent is not GraphNode. %s" % [parent.get_path()])
+
+func _ready() -> void:
+	var connect_func = func():
+		_connect_to_graph()
+	
+	if get_parent():
+		connect_func.call()
+	else:
+		tree_entered.connect(connect_func, CONNECT_ONE_SHOT)
+#endregion
+
+#region Connections
+func _disable_all_slots():
+	for i in MAX_SLOTS:
+		set_slot_enabled_left(i, false)
+		set_slot_enabled_right(i, false)
+
+func _update_slots() -> void: pass # TODO
+
+func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	print("Tried to connect from %s(%s) to %s(%s)" % [from_node, from_port, to_node, to_port])
+
+func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	print("Tried to disconnect from %s(%s) to %s(%s)" % [from_node, from_port, to_node, to_port])
+
+func _get_connections_for_port(port_idx: int) -> Array:
+	return get_parent().get_connection_list().filter(func(c):
+		return (c.from_node == name and c.from_port == port_idx) or \
+			   (c.to_node == name and c.to_port == port_idx))
+
+func _disconnect_port(port_idx: int) -> void:
+	var connections = _get_connections_for_port(port_idx)
+	for c in connections:
+		connection_removed.emit(c.from_node, c.from_port, c.to_node, c.to_port)
+
+func _update_connections(old_idx: int, new_idx: int, connections: Array = []) -> void:
+	connections = connections if connections else _get_connections_for_port(old_idx)
+	
+	for c in connections:
+		connection_removed.emit(c.from_node, c.from_port, c.to_node, c.to_port)
+
+		# TODO: does base event node need this? refactored from multieventnode
+		if new_idx >= 0: # Skip reconnection if new_idx is negative (for removal)
+			var from_node = c.from_node if c.from_node != name else name
+			var from_port = new_idx if c.from_node == name else c.from_port
+			var to_node = c.to_node if c.to_node != name else name
+			var to_port = new_idx if c.to_node == name else c.to_port
+			connection_created.emit(from_node, from_port, to_node, to_port)
+#endregion
+
+#region Nodes & Graph
+func _on_node_deleted(node: Node) -> void: pass
+#endregion
 
 func setup_editor_for_event(event: Event):
 	var properties = event.get_editable_properties()

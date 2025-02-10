@@ -1,12 +1,6 @@
 extends EventNode
 class_name MultiEventNode
 
-const MAX_SLOTS = 32
-
-signal connection_removed(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
-signal connection_created(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
-signal connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int)
-
 var add_button: Button
 var node_dropdown: OptionButton
 
@@ -30,35 +24,20 @@ func _ready():
 	
 	add_child(controls)
 	
-	var connect_func = func():
-		_connect_to_graph()
+	# var connect_func = func():
+	# 	_connect_to_graph()
 	
-	if get_parent():
-		connect_func.call()
-	else:
-		tree_entered.connect(connect_func, CONNECT_ONE_SHOT)
+	# if get_parent():
+	# 	connect_func.call()
+	# else:
+	# 	tree_entered.connect(connect_func, CONNECT_ONE_SHOT)
+	super._ready()
 	
 	if event is MultiEvent:
 		for sub_event in event.events:
 			_add_event_ui(sub_event)
 
-func _connect_to_graph() -> void:
-	var parent := get_parent()
-	if parent is GraphEdit:
-		# Disconnect existing connections first to prevent duplicates
-		if connection_removed.is_connected(parent.disconnect_node):
-			connection_removed.disconnect(parent.disconnect_node)
-		if connection_created.is_connected(parent.connect_node):
-			connection_created.disconnect(parent.connect_node)
-			
-		connection_removed.connect(parent.disconnect_node)
-		connection_created.connect(parent.connect_node)
-		parent.connection_request.connect(_on_connection_request)
-		parent.disconnection_request.connect(_on_disconnection_request)
-		parent.child_exiting_tree.connect(_on_node_deleted) # Add this line
-	else:
-		push_error("Event node parent is not GraphNode. %s" % [parent.get_path()])
-
+# override
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	if from_node == name:
 		var event_row = get_child(from_port)
@@ -68,6 +47,7 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 			var label = event_row.get_child(0)
 			label.text = target_node.title
 
+# override
 func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	if from_node == name:
 		# Reset the label when disconnected
@@ -76,70 +56,7 @@ func _on_disconnection_request(from_node: StringName, from_port: int, to_node: S
 			var label = event_row.get_child(0)
 			label.text = "New Event"
 
-func _add_event_ui(sub_event = null) -> HBoxContainer:
-	if get_child_count() >= MAX_SLOTS: # GraphEdit typically has 32 max slots
-		push_error("Cannot add more events: maximum slot limit reached")
-		return null
-		
-	var row = HBoxContainer.new()
-	var label := Label.new()
-	# var dropdown := OptionButton.new()
-
-	# Setup label
-	label.set("text", sub_event.name if sub_event else "New Event")
-	
-	# Setup dropdown
-	# dropdown.add_item("Option 1", 0)
-	# dropdown.add_item("Option 2", 1)
-	# dropdown.add_item("Option 3", 2)
-	# dropdown.connect("item_selected", func(index): _on_dropdown_selected(row, index))
-	
-	# Add elements to row
-	row.add_child(label)
-	# row.add_child(dropdown)
-	
-	# Add control buttons
-	var buttons = [
-		["X", _remove_event],
-		["↑", _move_event, -1],
-		["↓", _move_event, 1]
-	]
-	
-	for btn_data in buttons:
-		var btn = Button.new()
-		btn.text = btn_data[0]
-		btn.connect("pressed",
-			func(): btn_data[1].call(row) if btn_data.size() == 2 \
-			else btn_data[1].call(row, btn_data[2]))
-		row.add_child(btn)
-	
-	add_child(row)
-	move_child(row, get_child_count() - 2)
-	_update_slots()
-	return row
-
-func _get_connections_for_port(port_idx: int) -> Array:
-	return get_parent().get_connection_list().filter(func(c):
-		return (c.from_node == name and c.from_port == port_idx) or \
-			   (c.to_node == name and c.to_port == port_idx))
-
-func _disconnect_port(port_idx: int) -> void:
-	var connections = _get_connections_for_port(port_idx)
-	for c in connections:
-		connection_removed.emit(c.from_node, c.from_port, c.to_node, c.to_port)
-
-func _update_connections(old_idx: int, new_idx: int, connections: Array = []) -> void:
-	connections = connections if connections else _get_connections_for_port(old_idx)
-	
-	for c in connections:
-		connection_removed.emit(c.from_node, c.from_port, c.to_node, c.to_port)
-		if new_idx >= 0: # Skip reconnection if new_idx is negative (for removal)
-			var from_node = c.from_node if c.from_node != name else name
-			var from_port = new_idx if c.from_node == name else c.from_port
-			var to_node = c.to_node if c.to_node != name else name
-			var to_port = new_idx if c.to_node == name else c.to_port
-			connection_created.emit(from_node, from_port, to_node, to_port)
-
+#region Event
 func _remove_event(row: HBoxContainer) -> void:
 	var idx = row.get_index()
 	
@@ -196,6 +113,7 @@ func _move_event(row: HBoxContainer, direction: int) -> void:
 		
 		_update_slots()
 
+# TODO: refactor into "get connectable nodes" or something idk
 func _get_event_rows() -> Array[HBoxContainer]:
 	var nodes = get_children()
 	var event_rows: Array[HBoxContainer] = []
@@ -204,27 +122,6 @@ func _get_event_rows() -> Array[HBoxContainer]:
 		if node is HBoxContainer and node != get_node_or_null("Controls"):
 			event_rows.append(node)
 	return event_rows
-
-func _update_slots() -> void:
-	# First disable ALL slots
-	for i in MAX_SLOTS:
-		set_slot_enabled_left(i, false)
-		set_slot_enabled_right(i, false)
-	
-	var event_rows = _get_event_rows()
-	
-	# Update slots using the array index rather than child index
-	for i in event_rows.size():
-		var row = event_rows[i]
-		var row_idx = row.get_index() # Get the actual index in the node's children
-		
-		# Set up slots based on position in event_rows array
-		set_slot_enabled_left(row_idx, i == 0) # Only first event gets left slot
-		set_slot_enabled_right(row_idx, true) # All events get right slot
-		set_slot_color_left(row_idx, Color.WHITE)
-		set_slot_color_right(row_idx, Color.WHITE)
-		set_slot_type_left(row_idx, 0)
-		set_slot_type_right(row_idx, 0)
 
 func get_event_data() -> Dictionary:
 	var data = {
@@ -261,18 +158,40 @@ func set_event_data(data: Dictionary) -> void:
 			dropdown.selected = event_data.get("option", 0) # Restore dropdown selection
 	
 	_update_slots()
+#endregion
 
-func _on_dropdown_selected(row: HBoxContainer, index: int) -> void:
-	var dropdown := row.get_child(1) as OptionButton
-	var label := row.get_child(0) as Label
-	# Do something with the selection
-	print("Row %s selected option: %s" % [row.get_index(), dropdown.get_item_text(index)])
+# override
+func _update_slots() -> void:
+	# First disable ALL slots
+	_disable_all_slots()
+	
+	var event_rows = _get_event_rows()
+	
+	# Update slots using the array index rather than child index
+	for i in event_rows.size():
+		var row = event_rows[i]
+		var row_idx = row.get_index() # Get the actual index in the node's children
+		
+		# Set up slots based on position in event_rows array
+		set_slot_enabled_left(row_idx, i == 0) # Only first event gets left slot
+		set_slot_enabled_right(row_idx, true) # All events get right slot
+		set_slot_color_left(row_idx, Color.WHITE)
+		set_slot_color_right(row_idx, Color.WHITE)
+		set_slot_type_left(row_idx, 0)
+		set_slot_type_right(row_idx, 0)
+
+#region UI
+# func _on_dropdown_selected(row: HBoxContainer, index: int) -> void:
+# 	var dropdown := row.get_child(1) as OptionButton
+# 	var label := row.get_child(0) as Label
+# 	# Do something with the selection
+# 	print("Row %s selected option: %s" % [row.get_index(), dropdown.get_item_text(index)])
 
 func _on_node_dropdown_selected(index: int) -> void:
 	print("Node dropdown selected: %s" % node_dropdown.get_item_text(index))
 	# Add your custom logic here
 
-# Add this new function to handle node deletion
+# override
 func _on_node_deleted(node: Node) -> void:
 	# Check if the deleted node was connected to any of our events
 	var event_rows = _get_event_rows()
@@ -289,3 +208,47 @@ func _on_node_deleted(node: Node) -> void:
 					var label = row.get_child(0)
 					label.text = "New Event"
 					row.modulate = Color.WHITE
+
+func _add_event_ui(sub_event = null) -> HBoxContainer:
+	if get_child_count() >= MAX_SLOTS: # GraphEdit typically has 32 max slots
+		push_error("Cannot add more events: maximum slot limit reached")
+		return null
+		
+	var row = HBoxContainer.new()
+	var label := Label.new()
+	# var dropdown := OptionButton.new()
+
+	# Setup label
+	label.set("text", sub_event.name if sub_event else "New Event")
+	
+	# Setup dropdown
+	# dropdown.add_item("Option 1", 0)
+	# dropdown.add_item("Option 2", 1)
+	# dropdown.add_item("Option 3", 2)
+	# dropdown.connect("item_selected", func(index): _on_dropdown_selected(row, index))
+	
+	# Add elements to row
+	row.add_child(label)
+	# row.add_child(dropdown)
+	
+	# Add control buttons
+	var buttons = [
+		["X", _remove_event],
+		["↑", _move_event, -1],
+		["↓", _move_event, 1]
+	]
+	
+	for btn_data in buttons:
+		var btn = Button.new()
+		btn.text = btn_data[0]
+		btn.connect("pressed",
+			func(): btn_data[1].call(row) if btn_data.size() == 2 \
+			else btn_data[1].call(row, btn_data[2]))
+		row.add_child(btn)
+	
+	add_child(row)
+	move_child(row, get_child_count() - 2)
+	_update_slots()
+	return row
+
+#endregion
