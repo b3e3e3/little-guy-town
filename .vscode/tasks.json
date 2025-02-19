@@ -5,7 +5,10 @@
   "tasks": [
     {
       "label": "build windows debug",
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
       "type": "shell",
       "command": "scons",
       "options": {
@@ -21,7 +24,10 @@
     },
     {
       "label": "build mac debug",
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": false,
+      },
       "type": "shell",
       "command": "scons",
       "options": {

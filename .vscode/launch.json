@@ -5,15 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "GDScript: Launch Project",
-            "type": "godot",
+            "name": "Debug GDExtension",
+            "type": "cppvsdbg",
             "request": "launch",
-            "project": "${workspaceFolder}",
-            "scene": "current",
-            "debug_collisions": false,
-            "debug_paths": false,
-            "debug_navigation": false,
-            "additional_options": ""
+            "program": "C:/Godot/debug/bin/godot.windows.editor.x86_64.console.exe",
+            "args": [
+                "${workspaceFolder}/project.godot",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/extensions/ventman",
+            "environment": [],
+            "console": "internalConsole",
         }
     ]
 }

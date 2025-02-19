@@ -1,4 +1,5 @@
 extends Control
+class_name EventGraph
 
 @onready var graph: GraphEdit = $PanelContainer/GraphEdit
 
@@ -45,6 +46,7 @@ func _on_graph_edit_connection_request(from_node, from_port, to_node, to_port):
 	if from_node == to_node:
 		print("Cannot connect node to itself")
 		return
+	
 	graph.connect_node(from_node, from_port, to_node, to_port)
 
 

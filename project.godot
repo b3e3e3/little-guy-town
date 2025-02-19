@@ -31,7 +31,7 @@ project/assembly_name="little guy town"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/saturn/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/ventman-editor/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/saturn/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/ventman-editor/plugin.cfg")
 
 [input]
 

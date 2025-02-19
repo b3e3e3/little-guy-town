@@ -11,6 +11,7 @@ func _ready():
 	
 	# Create and setup node dropdown
 	node_dropdown = OptionButton.new()
+	# TODO: list modes
 	node_dropdown.add_item("Global Option 1", 0)
 	node_dropdown.add_item("Global Option 2", 1)
 	node_dropdown.add_item("Global Option 3", 2)
