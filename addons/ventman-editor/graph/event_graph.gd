@@ -5,16 +5,16 @@ class_name EventGraph
 
 @export var initial_pos := Vector2(50, 50)
 @export var new_node_offset := Vector2(30, 30)
-@export var node_scene: PackedScene = preload("event_node.tscn")
+# @export var node_scene: PackedScene = preload("event_node.tscn")
 
 var nodes: Dictionary[String, EventNode] = {}
 
 func _ready():
-	# %GraphEdit.add_child(MultiEventNode.new())
 	pass
 
 func _on_new_button_pressed():
-	%AddEventMenu.popup_centered()
+	%AddEventMenu.position = get_local_mouse_position()
+	%AddEventMenu.show()
 	%AddEventMenu.id_pressed.connect(select_event, CONNECT_ONE_SHOT)
 
 func select_event(id: int):
