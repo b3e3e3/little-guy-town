@@ -5,7 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug GDExtension",
+            "name": "GDScript: Launch Current File",
+            "type": "godot",
+            "request": "launch",
+            "scene": "current",
+            "project": "",
+            "additional_options": ""
+        },
+        // {
+        //     "name": "Attach to Godot Game Process",
+        //     "type": "cppvsdbg",
+        //     "request": "attach",
+        //     "processId": "${command:pickProcess}",
+        //     "symbolSearchPath": "${workspaceFolder}/extensions/ventman/bin;C:/Godot/debug/bin"
+        // },
+        {
+            "name": "Godot Editor",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "C:/Godot/debug/bin/godot.windows.editor.x86_64.console.exe",
@@ -16,6 +31,14 @@
             "cwd": "${workspaceFolder}/extensions/ventman",
             "environment": [],
             "console": "internalConsole",
-        }
+            "symbolOptions": {
+                // Update this path to where your PDB files for the extension are located.
+                "searchPaths": [
+                    "${workspaceFolder}/extensions/ventman/bin",
+                    "C:/Godot/debug/bin",
+                ],
+                "loadAll": true,
+            },
+        },
     ]
 }

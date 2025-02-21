@@ -18,27 +18,29 @@
         "platform=windows",
         "target=template_debug",
         "compiledb=yes",
+        "dev_build=true",
         "debug_symbols=yes",
       ],
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build mac debug",
+      "label": "build godot-cpp windows debug",
       "group": {
         "kind": "build",
-        "isDefault": false,
       },
       "type": "shell",
       "command": "scons",
       "options": {
-        "cwd": "${workspaceFolder}/extensions/ventman"
+        "cwd": "${workspaceFolder}/extensions/ventman/godot-cpp"
       },
       "args": [
-        "platform=macos",
+        "platform=windows",
         "target=template_debug",
         "compiledb=yes",
+        "dev_build=true",
         "debug_symbols=yes",
       ],
-    }
+      "problemMatcher": "$msCompile"
+    },
   ]
 }

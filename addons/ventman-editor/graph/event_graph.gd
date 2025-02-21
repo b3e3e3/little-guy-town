@@ -10,8 +10,8 @@ class_name EventGraph
 var nodes: Dictionary[String, EventNode] = {}
 
 func _ready():
-	%GraphEdit.add_child(MultiEventNode.new())
-	# pass
+	# %GraphEdit.add_child(MultiEventNode.new())
+	pass
 
 func _on_new_button_pressed():
 	%AddEventMenu.popup_centered()
@@ -27,7 +27,7 @@ func set_all_select(selected: bool):
 		n.selected = selected
 
 func create_event_node(event: Event):
-	var new_node := node_scene.instantiate() as EventNode
+	var new_node := EventNode.new() # node_scene.instantiate() as EventNode
 	# TODO: smaller subtitle next to title with event type
 	
 	new_node.title += "%s (%s)" % [nodes.size(), event.get_class().get_basename()]
@@ -36,7 +36,7 @@ func create_event_node(event: Event):
 	nodes[new_node.title] = new_node
 	graph.add_child(new_node)
 	
-	new_node.setup_editor_for_event(event)
+	new_node.setup_event_editor(event)
 	
 	set_all_select(false)
 	new_node.selected = true

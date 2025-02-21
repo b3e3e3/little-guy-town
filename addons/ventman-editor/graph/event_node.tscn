@@ -1,12 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cshk0egybh46u"]
-
-[ext_resource type="Script" uid="uid://duqqqcr8lwfpo" path="res://addons/ventman-editor/graph/event_node.gd" id="1_yi2d3"]
-[ext_resource type="Script" uid="uid://gxsn0e10iu4c" path="res://events/MessageEvent.gd" id="2_vx0b2"]
-
-[sub_resource type="Event" id="Event_raxaj"]
-script = ExtResource("2_vx0b2")
-messages = Array[String](["sup"])
-metadata/_custom_type_script = ExtResource("2_vx0b2")
+[gd_scene format=3 uid="uid://cshk0egybh46u"]
 
 [node name="EventNode" type="GraphNode"]
 anchors_preset = -1
@@ -26,8 +18,6 @@ slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-script = ExtResource("1_yi2d3")
-event = SubResource("Event_raxaj")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
